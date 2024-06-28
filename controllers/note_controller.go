@@ -18,7 +18,8 @@ func CreateNoteHandler(c *gin.Context) {
 	}
 
 	notes = append(notes, newNote)
-	c.JSON(http.StatusCreated, newNote)
+	message := "Note created successfully"
+	c.JSON(http.StatusCreated, gin.H{"message": message, "note": newNote})
 }
 
 func GetNotesHandler(c *gin.Context) {
