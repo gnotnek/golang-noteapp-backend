@@ -18,8 +18,15 @@ func InitDB() {
 		log.Fatal("Error loading .env file")
 	}
 
-	dbUrl := os.Getenv("DB_URL")
-	db, err := gorm.Open("postgres", dbUrl)
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbUser := os.Getenv("DB_USER")
+	dbName := os.Getenv("DB_NAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbSslMode := os.Getenv("DB_SSLMODE")
+
+	dsn := "host=" + dbHost + " port=" + dbPort + " user=" + dbUser + " dbname=" + dbName + " password=" + dbPassword + " sslmode=" + dbSslMode
+	db, err := gorm.Open("postgres", dsn)
 	if err != nil {
 		log.Fatalf("Could not connect to database: %v", err)
 	}
