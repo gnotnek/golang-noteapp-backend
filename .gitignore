@@ -32,4 +32,6 @@ go.work
 # Go module files
 go.sum
 
+.vscode/
+
 .env
