@@ -19,6 +19,9 @@ func SetupRouter() *gin.Engine {
 		{
 			notes.POST("", controllers.CreateNoteHandler)
 			notes.GET("", controllers.GetNotesHandler)
+			notes.GET("/:id", controllers.GetNoteByIdHandler)
+			notes.PUT("/:id", controllers.UpdateNoteByIdHandler)
+			notes.DELETE("/:id", controllers.DeleteNoteByIdHandler)
 		}
 	}
 
