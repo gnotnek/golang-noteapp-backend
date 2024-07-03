@@ -5,19 +5,20 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/google/uuid"
 )
 
 var jwtKey = []byte(os.Getenv("JWT_KEY"))
 
 type Claims struct {
-	Username string `json:"username"`
+	UserID uuid.UUID
 	jwt.StandardClaims
 }
 
-func CreateToken(username string) (string, error) {
+func CreateToken(userID uuid.UUID) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		Username: username,
+		UserID: userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

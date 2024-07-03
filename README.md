@@ -1,4 +1,5 @@
 # Golang Note Management Backend Service
+# Golang Note Management Backend Service
 
 ## 1. Project Overview
 
@@ -13,33 +14,33 @@ This project is a backend service for managing notes with user accounts, built u
 ### Steps:
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/gnotnek/golang-noteapp-backend.git
-   cd golang-noteapp-backend
-   ```
+    ```
+    git clone https://github.com/gnotnek/golang-noteapp-backend.git
+    cd golang-noteapp-backend
+    ```
 
 2. Install dependencies:
-   ```
-   go mod download
-   ```
+    ```
+    go mod download
+    ```
 
 3. Set up the environment:
-   - Copy the `.env.example` file to `.env`
-   - Update the `.env` file with your PostgreSQL credentials and JWT key:
-     ```
-     DB_HOST=your_host
-     DB_PORT=your_port
-     DB_USER=your_username
-     DB_NAME=your_database_name
-     DB_PASSWORD=your_password
-     DB_SSLMODE=disable
-     JWT_KEY=your_secret_key
-     ```
+    - Copy the `.env.example` file to `.env`
+    - Update the `.env` file with your PostgreSQL credentials and JWT key:
+      ```
+      DB_HOST=your_host
+      DB_PORT=your_port
+      DB_USER=your_username
+      DB_NAME=your_database_name
+      DB_PASSWORD=your_password
+      DB_SSLMODE=disable
+      JWT_KEY=your_secret_key
+      ```
 
 4. Run the project:
-   ```
-   go run main.go
-   ```
+    ```
+    go run main.go
+    ```
 
 The server should now be running on `http://localhost:8080`.
 
@@ -64,8 +65,8 @@ Authorization: Bearer <your_jwt_token>
 - Body:
   ```json
   {
-    "username": "your_username",
-    "password": "your_password"
+     "username": "your_username",
+     "password": "your_password"
   }
   ```
 
@@ -74,8 +75,8 @@ Authorization: Bearer <your_jwt_token>
 - Body:
   ```json
   {
-    "username": "your_username",
-    "password": "your_password"
+     "username": "your_username",
+     "password": "your_password"
   }
   ```
 - Response: JWT token
@@ -89,9 +90,8 @@ All note endpoints require authentication.
 - Body:
   ```json
   {
-    "title": "Note Title",
-    "body": "Note Content",
-    "userId": 1
+     "title": "Note Title",
+     "body": "Note Content",
   }
   ```
 
@@ -106,8 +106,8 @@ All note endpoints require authentication.
 - Body:
   ```json
   {
-    "title": "Updated Title",
-    "body": "Updated Content"
+     "title": "Updated Title",
+     "body": "Updated Content"
   }
   ```
 
@@ -137,8 +137,8 @@ The project follows a typical MVC (Model-View-Controller) architecture with some
 - `services/postgresql/notes_service.go`: Implements note-related database operations.
 - `controllers/user_controller.go`: Handles user registration and login.
 - `controllers/note_controller.go`: Manages CRUD operations for notes.
-- `middleware/auth.go`: Implements JWT authentication middleware.
-- `auth/jwt.go`: Provides functions for creating and verifying JWT tokens.
+- `middleware/auth.go`: Implements JWT authentication middleware and sets the user ID in the context.
+- `auth/jwt.go`: Provides functions for creating and verifying JWT tokens, now including the user ID in the claims.
 - `models/user_model.go` and `models/note_model.go`: Define the data structures for users and notes.
 
 The application uses the Gin web framework for handling HTTP requests and GORM as the ORM for database operations. JWT is used for stateless authentication.
@@ -148,14 +148,22 @@ The application uses the Gin web framework for handling HTTP requests and GORM a
 The application uses two main tables:
 
 1. **Users**:
-   - ID (UUID, primary key)
-   - Username (string, unique)
-   - Password (string, hashed)
+    - ID (UUID, primary key)
+    - Username (string, unique)
+    - Password (string, hashed)
 
 2. **Notes**:
-   - ID (UUID, primary key)
-   - Title (string)
-   - Body (string)
-   - UserID (uint, foreign key to Users)
+    - ID (UUID, primary key)
+    - Title (string)
+    - Body (string)
+    - UserID (UUID, foreign key to Users)
 
 The schema is automatically managed by GORM's AutoMigrate feature.
+
+## 7. Authentication Flow
+
+1. User registers or logs in, receiving a JWT token.
+2. The token contains the user's ID (UUID) in its claims.
+3. For authenticated requests, the client includes the token in the Authorization header.
+4. The AuthMiddleware verifies the token and sets the user ID in the request context.
+5. In note creation, the user ID is automatically extracted from the context and associated with the new note.

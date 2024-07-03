@@ -7,7 +7,6 @@ import (
 	"github.com/gnotnek/golang-noteapp-backend/auth"
 	"github.com/gnotnek/golang-noteapp-backend/models"
 	services "github.com/gnotnek/golang-noteapp-backend/services/postgresql"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,8 +17,6 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user.ID = uuid.New()
-
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error while hashing the password"})
@@ -28,7 +25,7 @@ func Register(c *gin.Context) {
 
 	user.Password = string(hashedPassword)
 
-	if err := services.CreateUser(user); err != nil {
+	if err := services.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error while creating the user"})
 		return
 	}
@@ -43,8 +40,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	dbUser, err := services.FindUserByUsername(user.Username)
-	if err != nil {
+	var dbUser models.User
+	if err := services.DB.Where("username = ?", user.Username).First(&dbUser).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
@@ -54,7 +51,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := auth.CreateToken(user.Username)
+	token, err := auth.CreateToken(dbUser.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error while generating the token"})
 		return

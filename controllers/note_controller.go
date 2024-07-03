@@ -17,7 +17,14 @@ func CreateNoteHandler(c *gin.Context) {
 		return
 	}
 
-	newNote.ID = uuid.New() // Generate a new UUID for the note ID
+	UserID, exist := c.Get("userID")
+	if !exist {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	newNote.ID = uuid.New()
+	newNote.UserID = UserID.(uuid.UUID)
 
 	err := services.AddNote(newNote)
 	if err != nil {
