@@ -7,6 +7,7 @@ import (
 	"github.com/gnotnek/golang-noteapp-backend/auth"
 	"github.com/gnotnek/golang-noteapp-backend/models"
 	services "github.com/gnotnek/golang-noteapp-backend/services/postgresql"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -16,6 +17,8 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	user.ID = uuid.New()
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
