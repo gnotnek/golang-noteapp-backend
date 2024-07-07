@@ -23,6 +23,16 @@ func SetupRouter() *gin.Engine {
 			notes.PUT("/:id", controllers.UpdateNoteByIdHandler)
 			notes.DELETE("/:id", controllers.DeleteNoteByIdHandler)
 		}
+
+		collab := api.Group("/collaborations")
+		collab.Use(middleware.AuthMiddleware())
+		{
+			collab.POST("/:noteId", controllers.CreateCollaboration)
+			collab.GET("", controllers.GetCollaborationsHandler)
+			collab.GET("/:id", controllers.GetCollaborationByIdHandler)
+			collab.PUT("/:id", controllers.UpdateCollaborationByIdHandler)
+			collab.DELETE("/:id", controllers.DeleteCollaborationByIdHandler)
+		}
 	}
 
 	return router
