@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gnotnek/golang-noteapp-backend/models"
-	services "github.com/gnotnek/golang-noteapp-backend/services/postgresql"
+	"github.com/gnotnek/golang-noteapp-backend/internal/models"
+	services "github.com/gnotnek/golang-noteapp-backend/internal/services/postgresql"
 	"github.com/google/uuid"
 )
 

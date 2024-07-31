@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gnotnek/golang-noteapp-backend/models"
+	"github.com/gnotnek/golang-noteapp-backend/internal/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"

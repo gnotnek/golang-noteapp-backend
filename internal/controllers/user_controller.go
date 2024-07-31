@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gnotnek/golang-noteapp-backend/auth"
-	"github.com/gnotnek/golang-noteapp-backend/models"
-	services "github.com/gnotnek/golang-noteapp-backend/services/postgresql"
+	"github.com/gnotnek/golang-noteapp-backend/internal/auth"
+	"github.com/gnotnek/golang-noteapp-backend/internal/models"
+	services "github.com/gnotnek/golang-noteapp-backend/internal/services/postgresql"
 	"golang.org/x/crypto/bcrypt"
 )
 

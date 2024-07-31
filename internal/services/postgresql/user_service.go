@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/gnotnek/golang-noteapp-backend/models"
+	"github.com/gnotnek/golang-noteapp-backend/internal/models"
 )
 
 func CreateUser(user models.User) error {

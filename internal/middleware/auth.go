@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gnotnek/golang-noteapp-backend/auth"
+	"github.com/gnotnek/golang-noteapp-backend/internal/auth"
 )
 
 func AuthMiddleware() gin.HandlerFunc {

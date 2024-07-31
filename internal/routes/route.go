@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gnotnek/golang-noteapp-backend/controllers"
-	"github.com/gnotnek/golang-noteapp-backend/middleware"
+	"github.com/gnotnek/golang-noteapp-backend/internal/controllers"
+	"github.com/gnotnek/golang-noteapp-backend/internal/middleware"
 )
 
 func SetupRouter() *gin.Engine {
